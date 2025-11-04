@@ -2,6 +2,12 @@
 
 An intelligent, cloud-based cost calculation platform that helps you make informed decisions about purchasing, renting, testing, or finding alternatives for products and services.
 
+## 🚀 Live Demo
+
+**Try it now:** [https://jhaladik.github.io/clevercost/](https://jhaladik.github.io/clevercost/)
+
+The web interface is fully functional and runs entirely in your browser - no server needed, no data collected!
+
 ## Features
 
 ### 1. 🎯 Category-Based Intelligent Selection

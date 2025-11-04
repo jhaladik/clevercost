@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleverCost - Smart Cost Calculator</title>
+    <meta name="description" content="Intelligent cost calculator helping you decide: Buy, Rent, Test, or find Alternatives">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">💰</span>
+                <h1>CleverCost</h1>
+            </div>
+            <p class="tagline">Smart decisions for your purchases</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Calculator Form -->
+            <section class="calculator-section">
+                <h2>Calculate Your Best Option</h2>
+
+                <form id="calculatorForm" class="calculator-form">
+                    <!-- Item Name with Autocomplete -->
+                    <div class="form-group">
+                        <label for="itemName">What are you considering?</label>
+                        <div class="autocomplete-wrapper">
+                            <input
+                                type="text"
+                                id="itemName"
+                                name="itemName"
+                                placeholder="Start typing... (e.g., 'laptop', 'camera')"
+                                autocomplete="off"
+                                required
+                            >
+                            <div id="autocompleteResults" class="autocomplete-results"></div>
+                        </div>
+                        <small class="hint">Type a few characters to see suggestions</small>
+                    </div>
+
+                    <!-- Category (auto-filled) -->
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input
+                            type="text"
+                            id="category"
+                            name="category"
+                            readonly
+                            placeholder="Auto-detected from your selection"
+                        >
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Purchase Price -->
+                        <div class="form-group">
+                            <label for="purchasePrice">Purchase Price ($)</label>
+                            <input
+                                type="number"
+                                id="purchasePrice"
+                                name="purchasePrice"
+                                placeholder="2500"
+                                min="0"
+                                step="1"
+                                required
+                            >
+                        </div>
+
+                        <!-- Rental Price -->
+                        <div class="form-group">
+                            <label for="rentalPrice">Rental Price ($)</label>
+                            <input
+                                type="number"
+                                id="rentalPrice"
+                                name="rentalPrice"
+                                placeholder="150"
+                                min="0"
+                                step="1"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Rental Period -->
+                        <div class="form-group">
+                            <label for="rentalPeriod">Rental Period</label>
+                            <select id="rentalPeriod" name="rentalPeriod">
+                                <option value="day">Per Day</option>
+                                <option value="week">Per Week</option>
+                                <option value="month" selected>Per Month</option>
+                            </select>
+                        </div>
+
+                        <!-- Expected Duration -->
+                        <div class="form-group">
+                            <label for="expectedDuration">How long will you need it? (months)</label>
+                            <input
+                                type="number"
+                                id="expectedDuration"
+                                name="expectedDuration"
+                                placeholder="12"
+                                min="1"
+                                step="1"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Usage Frequency -->
+                        <div class="form-group">
+                            <label for="usageFrequency">How often will you use it?</label>
+                            <select id="usageFrequency" name="usageFrequency">
+                                <option value="daily">Daily</option>
+                                <option value="weekly" selected>Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+
+                        <!-- Usage Times -->
+                        <div class="form-group">
+                            <label for="usageTimes">Times per period</label>
+                            <input
+                                type="number"
+                                id="usageTimes"
+                                name="usageTimes"
+                                placeholder="2"
+                                min="1"
+                                step="1"
+                                value="2"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Advanced Options (Collapsible) -->
+                    <div class="advanced-section">
+                        <button type="button" class="toggle-advanced" id="toggleAdvanced">
+                            <span>⚙️ Advanced Options</span>
+                            <span class="toggle-icon">▼</span>
+                        </button>
+
+                        <div id="advancedOptions" class="advanced-options" style="display: none;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="maintenanceCost">Annual Maintenance Cost ($)</label>
+                                    <input
+                                        type="number"
+                                        id="maintenanceCost"
+                                        name="maintenanceCost"
+                                        placeholder="200"
+                                        min="0"
+                                        value="0"
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="depreciationRate">Annual Depreciation Rate (%)</label>
+                                    <input
+                                        type="number"
+                                        id="depreciationRate"
+                                        name="depreciationRate"
+                                        placeholder="15"
+                                        min="0"
+                                        max="100"
+                                        value="15"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        id="uncertainNeed"
+                                        name="uncertainNeed"
+                                    >
+                                    <span>I'm uncertain if this meets my needs</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-primary" id="calculateBtn">
+                        Calculate Best Option
+                    </button>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <h2>Your Analysis</h2>
+
+                <!-- Recommendation Card -->
+                <div class="recommendation-card" id="recommendationCard">
+                    <div class="recommendation-badge" id="recommendationBadge"></div>
+                    <h3 id="recommendationTitle"></h3>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="confidenceFill"></div>
+                    </div>
+                    <p class="confidence-text" id="confidenceText"></p>
+                </div>
+
+                <!-- Comparison Cards -->
+                <div class="comparison-grid">
+                    <!-- Buy Card -->
+                    <div class="comparison-card buy-card">
+                        <div class="card-header">
+                            <h3>💵 BUY</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="cost-display">
+                                <span class="cost-label">Total Cost</span>
+                                <span class="cost-value" id="buyTotalCost">$0</span>
+                            </div>
+                            <div class="cost-display secondary">
+                                <span class="cost-label">Monthly Equivalent</span>
+                                <span class="cost-value" id="buyMonthlyCost">$0/mo</span>
+                            </div>
+                            <div class="cost-display secondary">
+                                <span class="cost-label">Resale Value</span>
+                                <span class="cost-value" id="buyResaleValue">$0</span>
+                            </div>
+
+                            <div class="pros-cons">
+                                <div class="pros">
+                                    <h4>✓ Pros</h4>
+                                    <ul id="buyPros"></ul>
+                                </div>
+                                <div class="cons">
+                                    <h4>✗ Cons</h4>
+                                    <ul id="buyCons"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rent Card -->
+                    <div class="comparison-card rent-card">
+                        <div class="card-header">
+                            <h3>📅 RENT</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="cost-display">
+                                <span class="cost-label">Total Cost</span>
+                                <span class="cost-value" id="rentTotalCost">$0</span>
+                            </div>
+                            <div class="cost-display secondary">
+                                <span class="cost-label">Monthly Cost</span>
+                                <span class="cost-value" id="rentMonthlyCost">$0/mo</span>
+                            </div>
+                            <div class="cost-display secondary">
+                                <span class="cost-label">Cost Per Use</span>
+                                <span class="cost-value" id="rentCostPerUse">$0</span>
+                            </div>
+
+                            <div class="pros-cons">
+                                <div class="pros">
+                                    <h4>✓ Pros</h4>
+                                    <ul id="rentPros"></ul>
+                                </div>
+                                <div class="cons">
+                                    <h4>✗ Cons</h4>
+                                    <ul id="rentCons"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reasoning -->
+                <div class="reasoning-section">
+                    <h3>💡 Why This Recommendation?</h3>
+                    <ul id="reasoningList"></ul>
+                    <p class="break-even-text" id="breakEvenText"></p>
+                </div>
+
+                <!-- Alternatives -->
+                <div class="alternatives-section" id="alternativesSection">
+                    <h3>🔄 Consider These Alternatives</h3>
+                    <div class="alternatives-grid" id="alternativesGrid"></div>
+                </div>
+
+                <!-- Actions -->
+                <div class="actions">
+                    <button class="btn-secondary" id="recalculateBtn">Calculate Another</button>
+                    <button class="btn-secondary" id="shareBtn">Share Results</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>CleverCost - Make smarter financial decisions</p>
+            <p class="privacy-note">🔒 Your privacy is protected. All calculations happen locally in your browser.</p>
+            <p class="github-link">
+                <a href="https://github.com/jhaladik/clevercost" target="_blank">View on GitHub</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="lib/autocomplete.js"></script>
+    <script src="lib/calculator.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
