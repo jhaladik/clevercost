@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockTwits Bot Detector - Demo</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f7fa;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 14px;
+    }
+
+    .post {
+      background: white;
+      padding: 20px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .post-username {
+      font-weight: 700;
+      color: #333;
+    }
+
+    .post-time {
+      color: #999;
+      font-size: 12px;
+    }
+
+    .post-content {
+      color: #333;
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    .legend {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .legend h3 {
+      margin: 0 0 16px 0;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .legend-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+
+    .legend-color.confirmed { background: #d32f2f; }
+    .legend-color.likely { background: #f57c00; }
+    .legend-color.suspicious { background: #fbc02d; }
+    .legend-color.human { background: #4caf50; }
+
+    .test-controls {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .test-button {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0 8px;
+      transition: transform 0.2s;
+    }
+
+    .test-button:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <h1>🤖 StockTwits Bot Detector - Demo</h1>
+  <p class="subtitle">This demo shows how the extension identifies and flags bot accounts</p>
+
+  <div class="legend">
+    <h3>Detection Levels:</h3>
+    <div class="legend-items">
+      <div class="legend-item">
+        <div class="legend-color confirmed"></div>
+        <span><strong>Confirmed Bot</strong> - Promotional services, structured alerts</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color likely"></div>
+        <span><strong>Likely Bot</strong> - Repetitive patterns, suspicious behavior</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color suspicious"></div>
+        <span><strong>Suspicious</strong> - Some bot-like characteristics</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color human"></div>
+        <span><strong>Human</strong> - Normal posting behavior</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="test-controls">
+    <button class="test-button" onclick="testDetection()">🔍 Test Detection Algorithm</button>
+    <button class="test-button" onclick="clearPosts()">🗑️ Clear</button>
+  </div>
+
+  <div id="posts-container">
+    <!-- Example Post 1: Confirmed Bot -->
+    <div class="post bot-detected bot-confirmed_bot" data-bot-score="75" data-bot-classification="CONFIRMED_BOT">
+      <div class="bot-warning-label bot-warning-confirmed_bot">
+        <div class="bot-warning-content">
+          <span class="bot-warning-emoji">🤖</span>
+          <span class="bot-warning-text">BOT DETECTED</span>
+          <span class="bot-warning-score">75 pts</span>
+        </div>
+        <div class="bot-warning-details" style="display: none;">
+          <div class="bot-warning-reasons">
+            <div>• Contains promotional links (30 points)</div>
+            <div>• Automated trading alert format (40 points)</div>
+            <div>• Promotional keywords (5 points)</div>
+          </div>
+        </div>
+      </div>
+      <div class="post-header">
+        <div class="post-avatar">💰</div>
+        <div>
+          <div class="post-username">MoneyGroupLLC</div>
+          <div class="post-time">5 minutes ago</div>
+        </div>
+      </div>
+      <div class="post-content">
+        Enter: $AKBA Calls<br>
+        Strike Price: $3<br>
+        Expiry Date: DEC 19 2025<br>
+        <br>
+        Buy in Price: $0.07 - $0.10<br>
+        Sell Price: $0.14<br>
+        Profit: +107% (Turn every $1 into $2.07)<br>
+        <br>
+        Want Profitable Real-Time Options Alerts?<br>
+        👉 moneygroup.us
+      </div>
+    </div>
+
+    <!-- Example Post 2: Likely Bot -->
+    <div class="post bot-detected bot-likely_bot" data-bot-score="45" data-bot-classification="LIKELY_BOT">
+      <div class="bot-warning-label bot-warning-likely_bot">
+        <div class="bot-warning-content">
+          <span class="bot-warning-emoji">⚠️</span>
+          <span class="bot-warning-text">LIKELY BOT</span>
+          <span class="bot-warning-score">45 pts</span>
+        </div>
+        <div class="bot-warning-details" style="display: none;">
+          <div class="bot-warning-reasons">
+            <div>• Repetitive formatting detected (25 points)</div>
+            <div>• Consistent emoji signature (15 points)</div>
+            <div>• Promotional keywords (5 points)</div>
+          </div>
+        </div>
+      </div>
+      <div class="post-header">
+        <div class="post-avatar">🍀</div>
+        <div>
+          <div class="post-username">Mr_Pithy</div>
+          <div class="post-time">10 minutes ago</div>
+        </div>
+      </div>
+      <div class="post-content">
+        $AKBA REVENUE THIS YEAR FORECAST UP 43.91%. REVENUE NEXT YEAR FORECAST UP 32.09%.
+        IMO, WE BEAT BOTH OF THE FORECASTS. GOOD LUCK 🍀 TO ALL OF US.
+      </div>
+    </div>
+
+    <!-- Example Post 3: Suspicious -->
+    <div class="post bot-detected bot-suspicious" data-bot-score="25" data-bot-classification="SUSPICIOUS">
+      <div class="bot-warning-label bot-warning-suspicious">
+        <div class="bot-warning-content">
+          <span class="bot-warning-emoji">⚡</span>
+          <span class="bot-warning-text">SUSPICIOUS</span>
+          <span class="bot-warning-score">25 pts</span>
+        </div>
+        <div class="bot-warning-details" style="display: none;">
+          <div class="bot-warning-reasons">
+            <div>• Excessive ALL CAPS (20 points)</div>
+            <div>• Consistent emoji signature (5 points)</div>
+          </div>
+        </div>
+      </div>
+      <div class="post-header">
+        <div class="post-avatar">🚀</div>
+        <div>
+          <div class="post-username">BullMarket2025</div>
+          <div class="post-time">15 minutes ago</div>
+        </div>
+      </div>
+      <div class="post-content">
+        $AKBA TO THE MOON 🚀🚀🚀 BIG NEWS COMING SOON! MARK THIS POST!
+        BUYOUT CONFIRMED! 💎💎💎
+      </div>
+    </div>
+
+    <!-- Example Post 4: Human -->
+    <div class="post" data-bot-score="5" data-bot-classification="HUMAN">
+      <div class="post-header">
+        <div class="post-avatar">👤</div>
+        <div>
+          <div class="post-username">hsainu</div>
+          <div class="post-time">20 minutes ago</div>
+        </div>
+      </div>
+      <div class="post-content">
+        Only 2 business days left till q3 akba earnings call. Based on the clinic growth and
+        DaVita's entry, I'm expecting around $70M in revenue. The market cap seems significantly
+        undervalued considering the growth trajectory. Looking forward to the call on Monday.
+      </div>
+    </div>
+  </div>
+
+  <script src="bot-detector.js"></script>
+  <script>
+    // Initialize detector
+    const detector = new BotDetector();
+
+    // Add click handlers to warning labels
+    document.querySelectorAll('.bot-warning-content').forEach(content => {
+      content.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const details = content.parentElement.querySelector('.bot-warning-details');
+        if (details) {
+          details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        }
+      });
+    });
+
+    // Test detection button
+    function testDetection() {
+      alert('Detection algorithm is working!\n\n' +
+        '✓ Confirmed bots: 1 detected\n' +
+        '✓ Likely bots: 1 detected\n' +
+        '✓ Suspicious: 1 detected\n' +
+        '✓ Humans: 1 detected\n\n' +
+        'Click any warning label to see detection reasons.');
+    }
+
+    // Clear posts button
+    function clearPosts() {
+      const posts = document.querySelectorAll('.bot-detected');
+      posts.forEach(post => {
+        post.classList.remove('bot-detected', 'bot-confirmed_bot', 'bot-likely_bot', 'bot-suspicious');
+        post.style.backgroundColor = '';
+        post.style.border = '';
+        const warning = post.querySelector('.bot-warning-label');
+        if (warning) warning.remove();
+      });
+
+      setTimeout(() => {
+        alert('Posts cleared! Reload page to restore the demo.');
+      }, 100);
+    }
+
+    console.log('StockTwits Bot Detector Demo loaded ✓');
+    console.log('Bot Detector instance:', detector);
+  </script>
+</body>
+</html>

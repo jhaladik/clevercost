@@ -1,0 +1,267 @@
+/**
+ * StockTwits Bot Detector - Styles
+ * Visual indicators for detected bots
+ */
+
+/* Bot Warning Labels */
+.bot-warning-label {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 4px solid;
+  z-index: 1000;
+  position: relative;
+}
+
+.bot-warning-label:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Confirmed Bot - Red */
+.bot-warning-confirmed_bot {
+  background: linear-gradient(135deg, #fee 0%, #fcc 100%);
+  border-left-color: #d32f2f;
+  color: #b71c1c;
+}
+
+/* Likely Bot - Orange */
+.bot-warning-likely_bot {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border-left-color: #f57c00;
+  color: #e65100;
+}
+
+/* Suspicious - Yellow */
+.bot-warning-suspicious {
+  background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
+  border-left-color: #fbc02d;
+  color: #f57f17;
+}
+
+/* Warning Content */
+.bot-warning-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.bot-warning-emoji {
+  font-size: 18px;
+}
+
+.bot-warning-text {
+  flex: 1;
+  letter-spacing: 0.5px;
+}
+
+.bot-warning-score {
+  padding: 2px 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Warning Details (expandable) */
+.bot-warning-details {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bot-warning-reasons {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.bot-warning-reasons div {
+  margin: 4px 0;
+}
+
+/* Post Highlighting */
+.bot-detected {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.bot-detected.bot-confirmed_bot {
+  border-color: #d32f2f;
+  background-color: rgba(255, 0, 0, 0.05) !important;
+}
+
+.bot-detected.bot-likely_bot {
+  border-color: #f57c00;
+  background-color: rgba(255, 165, 0, 0.05) !important;
+}
+
+.bot-detected.bot-suspicious {
+  border-color: #fbc02d;
+  background-color: rgba(255, 255, 0, 0.03) !important;
+}
+
+/* Hidden Posts */
+.bot-hidden {
+  display: none !important;
+}
+
+.bot-show-button {
+  padding: 12px;
+  margin: 8px 0;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  border: 2px solid #bdbdbd;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: #616161;
+  transition: all 0.2s ease;
+}
+
+.bot-show-button:hover {
+  background: linear-gradient(135deg, #e0e0e0 0%, #d0d0d0 100%);
+  transform: scale(1.02);
+}
+
+/* Badge indicators */
+.bot-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.bot-badge-confirmed {
+  background: #d32f2f;
+  color: white;
+}
+
+.bot-badge-likely {
+  background: #f57c00;
+  color: white;
+}
+
+.bot-badge-suspicious {
+  background: #fbc02d;
+  color: #000;
+}
+
+/* Pulse animation for new detections */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(211, 47, 47, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(211, 47, 47, 0);
+  }
+}
+
+.bot-detected.bot-new {
+  animation: pulse 1.5s ease-out;
+}
+
+/* Tooltip */
+.bot-tooltip {
+  position: absolute;
+  background: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  max-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bot-tooltip.visible {
+  opacity: 1;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .bot-warning-confirmed_bot {
+    background: linear-gradient(135deg, #4a1818 0%, #5c2020 100%);
+    color: #ff6b6b;
+  }
+
+  .bot-warning-likely_bot {
+    background: linear-gradient(135deg, #4a3418 0%, #5c4020 100%);
+    color: #ffa94d;
+  }
+
+  .bot-warning-suspicious {
+    background: linear-gradient(135deg, #4a4418 0%, #5c5020 100%);
+    color: #ffd43b;
+  }
+
+  .bot-show-button {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    border-color: #444;
+    color: #ccc;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .bot-warning-label {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .bot-warning-content {
+    gap: 6px;
+  }
+
+  .bot-warning-emoji {
+    font-size: 16px;
+  }
+
+  .bot-warning-score {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+/* Print styles (hide bot indicators when printing) */
+@media print {
+  .bot-warning-label,
+  .bot-show-button {
+    display: none !important;
+  }
+
+  .bot-detected {
+    border: none !important;
+    background-color: transparent !important;
+  }
+}
