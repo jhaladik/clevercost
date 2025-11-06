@@ -211,12 +211,12 @@ class BotDetector {
     }
 
     // Multiple promotional emojis = likely bot
-    if (count >= 3) return 20;
-    if (count >= 2) return 10;
+    if (count >= 4) return 15;
+    if (count >= 3) return 10;
 
-    // Check for "Good luck 🍀" pattern specifically
+    // Check for "Good luck 🍀" pattern specifically (repeated use only)
     if (content.toLowerCase().includes('good luck') && content.includes('🍀')) {
-      return 15;
+      return 5;
     }
 
     return 0;
@@ -251,8 +251,8 @@ class BotDetector {
     const capsWords = words.filter(w => w === w.toUpperCase() && w.length > 2);
     const capsRatio = capsWords.length / words.length;
 
-    if (capsRatio > 0.6) return 20; // 60%+ all caps
-    if (capsRatio > 0.4) return 10; // 40%+ all caps
+    if (capsRatio > 0.7) return 15; // 70%+ all caps
+    if (capsRatio > 0.5) return 8;  // 50%+ all caps
 
     return 0;
   }
@@ -352,9 +352,9 @@ class BotDetector {
    * Classify bot based on total score
    */
   classifyBot(score) {
-    if (score >= 60) return 'CONFIRMED_BOT';
-    if (score >= 35) return 'LIKELY_BOT';
-    if (score >= 20) return 'SUSPICIOUS';
+    if (score >= 70) return 'CONFIRMED_BOT';
+    if (score >= 50) return 'LIKELY_BOT';
+    if (score >= 30) return 'SUSPICIOUS';
     return 'HUMAN';
   }
 

@@ -19,9 +19,9 @@
 
   // Sensitivity thresholds
   const sensitivityThresholds = {
-    low: { confirmed: 80, likely: 50, suspicious: 35 },
-    medium: { confirmed: 60, likely: 35, suspicious: 20 },
-    high: { confirmed: 40, likely: 25, suspicious: 15 }
+    low: { confirmed: 90, likely: 65, suspicious: 45 },
+    medium: { confirmed: 70, likely: 50, suspicious: 30 },
+    high: { confirmed: 55, likely: 35, suspicious: 20 }
   };
 
   // Load settings from storage
@@ -172,6 +172,7 @@
         <span class="bot-warning-emoji">${emoji[classification]}</span>
         <span class="bot-warning-text">${text[classification]}</span>
         <span class="bot-warning-score">${analysis.botScore} pts</span>
+        <span class="bot-warning-expand">▼ Click for details</span>
       </div>
       <div class="bot-warning-details" style="display: none;">
         <div class="bot-warning-reasons">
@@ -181,10 +182,20 @@
     `;
 
     // Toggle details on click
-    label.querySelector('.bot-warning-content').addEventListener('click', (e) => {
+    const content = label.querySelector('.bot-warning-content');
+    content.style.cursor = 'pointer';
+    content.addEventListener('click', (e) => {
       e.stopPropagation();
+      e.preventDefault();
       const details = label.querySelector('.bot-warning-details');
-      details.style.display = details.style.display === 'none' ? 'block' : 'none';
+      const expandIcon = label.querySelector('.bot-warning-expand');
+      if (details.style.display === 'none') {
+        details.style.display = 'block';
+        expandIcon.textContent = '▲ Hide details';
+      } else {
+        details.style.display = 'none';
+        expandIcon.textContent = '▼ Click for details';
+      }
     });
 
     // Insert at top of post
