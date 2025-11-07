@@ -20,6 +20,8 @@ const toggleAdvancedBtn = document.getElementById('toggleAdvanced');
 const advancedOptions = document.getElementById('advancedOptions');
 const recalculateBtn = document.getElementById('recalculateBtn');
 const shareBtn = document.getElementById('shareBtn');
+const paymentMethodSelect = document.getElementById('paymentMethod');
+const financingOptions = document.getElementById('financingOptions');
 
 // Load categories
 autocomplete.loadCategories(DEFAULT_CATEGORIES);
@@ -134,6 +136,15 @@ function updateKeyboardSelection(items) {
 }
 
 // ==========================================
+// Payment Method Toggle
+// ==========================================
+
+paymentMethodSelect.addEventListener('change', (e) => {
+  const isFinancing = e.target.value === 'finance';
+  financingOptions.style.display = isFinancing ? 'block' : 'none';
+});
+
+// ==========================================
 // Advanced Options Toggle
 // ==========================================
 
@@ -168,7 +179,14 @@ calculatorForm.addEventListener('submit', (e) => {
     usageTimes: parseInt(formData.get('usageTimes')),
     maintenanceCostAnnual: parseFloat(formData.get('maintenanceCost')) || 0,
     depreciationRate: parseFloat(formData.get('depreciationRate')) / 100 || 0.15,
-    uncertainNeed: formData.get('uncertainNeed') === 'on'
+    uncertainNeed: formData.get('uncertainNeed') === 'on',
+    // Financing parameters
+    paymentMethod: formData.get('paymentMethod'),
+    downPayment: parseFloat(formData.get('downPayment')) || 0,
+    interestRate: parseFloat(formData.get('interestRate')) || 0,
+    loanTerm: parseInt(formData.get('loanTerm')) || 36,
+    insuranceCost: parseFloat(formData.get('insuranceCost')) || 0,
+    maintenanceCostMonthly: parseFloat(formData.get('maintenanceCostMonthly')) || 0
   };
 
   // Perform calculation
@@ -186,13 +204,20 @@ calculatorForm.addEventListener('submit', (e) => {
 // ==========================================
 
 function displayResults(result) {
-  const { recommendation, buyAnalysis, rentAnalysis, alternatives, breakEven } = result;
+  const { recommendation, buyAnalysis, rentAnalysis, alternatives, breakEven, financing } = result;
 
   // Show results section
   resultsSection.style.display = 'block';
 
   // Recommendation Card
   displayRecommendation(recommendation);
+
+  // Financing Breakdown (if using financing)
+  if (financing.enabled && financing.details) {
+    displayFinancingBreakdown(financing.details);
+  } else {
+    document.getElementById('financingBreakdown').style.display = 'none';
+  }
 
   // Buy Card
   displayBuyAnalysis(buyAnalysis);
@@ -294,6 +319,18 @@ function displayReasoning(recommendation, breakEven) {
 
   const breakEvenText = document.getElementById('breakEvenText');
   breakEvenText.textContent = `⚖️ Break-even point: ${breakEven.months} months. ${breakEven.description}`;
+}
+
+function displayFinancingBreakdown(details) {
+  const breakdownSection = document.getElementById('financingBreakdown');
+  breakdownSection.style.display = 'block';
+
+  document.getElementById('financeMonthlyPayment').textContent = `$${details.monthlyPayment}`;
+  document.getElementById('financeTotalInterest').textContent = `$${details.totalInterest.toLocaleString()}`;
+  document.getElementById('financeInsurance').textContent = `$${details.insuranceMonthly}`;
+  document.getElementById('financeMaintenance').textContent = `$${details.maintenanceMonthly}`;
+  document.getElementById('financeTotalMonthly').textContent = `$${details.totalMonthlyPayment}`;
+  document.getElementById('financeExtraCost').textContent = `$${details.totalInterest.toLocaleString()}`;
 }
 
 function displayAlternatives(alternatives) {

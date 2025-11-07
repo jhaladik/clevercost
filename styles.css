@@ -605,6 +605,101 @@ input[readonly] {
 }
 
 /* ==========================================
+   Financing Styles
+   ========================================== */
+
+/* Financing Options in Form */
+.financing-options {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius-lg);
+    animation: fadeIn 0.3s ease;
+}
+
+.financing-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.financing-header h3 {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* Financing Breakdown in Results */
+.financing-breakdown {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+    border: 2px solid var(--warning-color);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.financing-breakdown h3 {
+    color: var(--warning-color);
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.5rem;
+}
+
+.financing-summary {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.financing-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.financing-item:last-child {
+    border-bottom: none;
+}
+
+.financing-item.total {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 2px solid var(--primary-color);
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.financing-item .label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.financing-item .value {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.125rem;
+}
+
+.financing-item .value.warning {
+    color: var(--warning-color);
+}
+
+.financing-note {
+    background: rgba(245, 158, 11, 0.1);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--warning-color);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.financing-note strong {
+    color: var(--warning-color);
+}
+
+/* ==========================================
    Footer
    ========================================== */
 
